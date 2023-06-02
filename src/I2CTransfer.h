@@ -4,6 +4,9 @@
 #include "Wire.h"
 
 
+namespace serialtransfer
+{
+
 class I2CTransfer
 {
   public: // <<---------------------------------------//public
@@ -109,3 +112,5 @@ class I2CTransfer
 
 	static void processData();
 };
+
+}

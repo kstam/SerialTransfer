@@ -1,5 +1,7 @@
 #include "SerialTransfer.h"
 
+namespace serialtransfer
+{
 
 /*
  void SerialTransfer::begin(Stream &_port, configST configs)
@@ -100,7 +102,7 @@ uint8_t SerialTransfer::available()
 			bytesRead = packet.parse(recChar, valid);
 			status    = packet.status;
 
-			if (status != CONTINUE)
+			if (status != ST_CONTINUE)
 			{
 				if (status < 0)
 					reset();
@@ -184,3 +186,4 @@ void SerialTransfer::reset()
 	packet.reset();
 	status = packet.status;
 }
+} // namespace serialtransfer

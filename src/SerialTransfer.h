@@ -2,6 +2,8 @@
 #include "Arduino.h"
 #include "Packet.h"
 
+namespace serialtransfer
+{
 
 class SerialTransfer
 {
@@ -12,7 +14,7 @@ class SerialTransfer
 
 
 	void    begin(Stream& _port, const configST configs);
-	void    begin(Stream& _port, const bool _debug = true, Stream& _debugPort = Serial, uint32_t _timeout = DEFAULT_TIMEOUT);
+	void    begin(Stream& _port, const bool _debug = true, Stream& _debugPort = Serial, uint32_t _timeout = ST_DEFAULT_TIMEOUT);
 	uint8_t sendData(const uint16_t& messageLen, const uint8_t packetID = 0);
 	uint8_t available();
 	bool    tick();
@@ -97,6 +99,7 @@ class SerialTransfer
 
 
   private: // <<---------------------------------------//private
-	Stream* port;
+	Stream*  port;
 	uint32_t timeout;
 };
+} // namespace serialtransfer

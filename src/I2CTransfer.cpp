@@ -1,5 +1,7 @@
 #include "I2CTransfer.h"
 
+namespace serialtransfer
+{
 
 /*
  void I2CTransfer::begin(TwoWire &_port, configST& configs)
@@ -99,8 +101,8 @@ void I2CTransfer::processData()
 		recChar               = classToUse->port->read();
 		classToUse->bytesRead = classToUse->packet.parse(recChar);
 		classToUse->status    = classToUse->packet.status;
-		
-		if (classToUse->status != CONTINUE)
+
+		if (classToUse->status != ST_CONTINUE)
 		{
 			if (classToUse->status < 0)
 				classToUse->reset();
@@ -150,3 +152,4 @@ void I2CTransfer::reset()
 
 
 I2CTransfer* I2CTransfer::classToUse = NULL;
+} // namespace serialtransfer

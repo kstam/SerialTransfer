@@ -1,6 +1,8 @@
 #pragma once
 #include "Arduino.h"
 
+namespace serialtransfer
+{
 
 class PacketCRC
 {
@@ -74,3 +76,4 @@ class PacketCRC
 
 
 extern PacketCRC crc;
+} // namespace serialtransfer

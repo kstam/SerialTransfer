@@ -21,17 +21,17 @@ void loop()
 {
   myTransfer.sendDatum(fileName); // Send filename
   
-  uint16_t numPackets = fileSize / (MAX_PACKET_SIZE - 2); // Reserve two bytes for current file index
+  uint16_t numPackets = fileSize / (ST_MAX_PACKET_SIZE - 2); // Reserve two bytes for current file index
   
-  if (fileSize % MAX_PACKET_SIZE) // Add an extra transmission if needed
+  if (fileSize % ST_MAX_PACKET_SIZE) // Add an extra transmission if needed
     numPackets++;
   
   for (uint16_t i=0; i<numPackets; i++) // Send all data within the file across multiple packets
   {
-    uint16_t fileIndex = i * MAX_PACKET_SIZE; // Determine the current file index
-    uint8_t dataLen = MAX_PACKET_SIZE - 2;
+    uint16_t fileIndex = i * ST_MAX_PACKET_SIZE; // Determine the current file index
+    uint8_t dataLen = ST_MAX_PACKET_SIZE - 2;
 
-    if ((fileIndex + (MAX_PACKET_SIZE - 2)) > fileSize) // Determine data length for the last packet if file length is not an exact multiple of MAX_PACKET_SIZE-2
+    if ((fileIndex + (ST_MAX_PACKET_SIZE - 2)) > fileSize) // Determine data length for the last packet if file length is not an exact multiple of ST_MAX_PACKET_SIZE-2
       dataLen = fileSize - fileIndex;
     
     uint8_t sendSize = myTransfer.txObj(fileIndex); // Stuff the current file index

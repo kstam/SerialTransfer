@@ -15,26 +15,28 @@
 #include "Arduino.h"
 #include "PacketCRC.h"
 
+namespace serialtransfer
+{
 
 typedef void (*functionPtr)();
 
 
-const int8_t CONTINUE           = 3;
-const int8_t NEW_DATA           = 2;
-const int8_t NO_DATA            = 1;
-const int8_t CRC_ERROR          = 0;
-const int8_t PAYLOAD_ERROR      = -1;
-const int8_t STOP_BYTE_ERROR    = -2;
-const int8_t STALE_PACKET_ERROR = -3;
+const int8_t ST_CONTINUE           = 3;
+const int8_t ST_NEW_DATA           = 2;
+const int8_t ST_NO_DATA            = 1;
+const int8_t ST_CRC_ERROR          = 0;
+const int8_t ST_PAYLOAD_ERROR      = -1;
+const int8_t ST_STOP_BYTE_ERROR    = -2;
+const int8_t ST_STALE_PACKET_ERROR = -3;
 
-const uint8_t START_BYTE = 0x7E;
-const uint8_t STOP_BYTE  = 0x81;
+const uint8_t ST_START_BYTE = 0x7E;
+const uint8_t ST_STOP_BYTE  = 0x81;
 
-const uint8_t PREAMBLE_SIZE   = 4;
-const uint8_t POSTAMBLE_SIZE  = 2;
-const uint8_t MAX_PACKET_SIZE = 0xFE; // Maximum allowed payload bytes per packet
+const uint8_t ST_PREAMBLE_SIZE   = 4;
+const uint8_t ST_POSTAMBLE_SIZE  = 2;
+const uint8_t ST_MAX_PACKET_SIZE = 0xFE; // Maximum allowed payload bytes per packet
 
-const uint8_t DEFAULT_TIMEOUT = 50;
+const uint8_t ST_DEFAULT_TIMEOUT = 50;
 
 
 struct configST
@@ -50,17 +52,17 @@ struct configST
 class Packet
 {
   public: // <<---------------------------------------//public
-	uint8_t txBuff[MAX_PACKET_SIZE];
-	uint8_t rxBuff[MAX_PACKET_SIZE];
-	uint8_t preamble[PREAMBLE_SIZE]   = {START_BYTE, 0, 0, 0};
-	uint8_t postamble[POSTAMBLE_SIZE] = {0, STOP_BYTE};
+	uint8_t txBuff[ST_MAX_PACKET_SIZE];
+	uint8_t rxBuff[ST_MAX_PACKET_SIZE];
+	uint8_t preamble[ST_PREAMBLE_SIZE]   = {ST_START_BYTE, 0, 0, 0};
+	uint8_t postamble[ST_POSTAMBLE_SIZE] = {0, ST_STOP_BYTE};
 
 	uint8_t bytesRead = 0;
 	int8_t  status    = 0;
 
 
 	void    begin(const configST& configs);
-	void    begin(const bool& _debug = true, Stream& _debugPort = Serial, const uint32_t& _timeout = DEFAULT_TIMEOUT);
+	void    begin(const bool& _debug = true, Stream& _debugPort = Serial, const uint32_t& _timeout = ST_DEFAULT_TIMEOUT);
 	uint8_t constructPacket(const uint16_t& messageLen, const uint8_t& packetID = 0);
 	uint8_t parse(const uint8_t& recChar, const bool& valid = true);
 	uint8_t currentPacketID();
@@ -94,8 +96,8 @@ class Packet
 		uint8_t* ptr = (uint8_t*)&val;
 		uint16_t maxIndex;
 
-		if ((len + index) > MAX_PACKET_SIZE)
-			maxIndex = MAX_PACKET_SIZE;
+		if ((len + index) > ST_MAX_PACKET_SIZE)
+			maxIndex = ST_MAX_PACKET_SIZE;
 		else
 			maxIndex = len + index;
 
@@ -136,8 +138,8 @@ class Packet
 		uint8_t* ptr = (uint8_t*)&val;
 		uint16_t maxIndex;
 
-		if ((len + index) > MAX_PACKET_SIZE)
-			maxIndex = MAX_PACKET_SIZE;
+		if ((len + index) > ST_MAX_PACKET_SIZE)
+			maxIndex = ST_MAX_PACKET_SIZE;
 		else
 			maxIndex = len + index;
 
@@ -185,3 +187,4 @@ class Packet
 	void    stuffPacket(uint8_t arr[], const uint8_t& len);
 	void    unpackPacket(uint8_t arr[]);
 };
+} // namespace serialtransfer
